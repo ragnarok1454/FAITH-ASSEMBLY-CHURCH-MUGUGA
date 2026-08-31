@@ -1,0 +1,222 @@
+/* =========================
+   FADE IN
+========================= */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================
+   FADE UP
+========================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================
+   FLOAT
+========================= */
+
+@keyframes floating {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero-content {
+    animation:
+        fadeUp 1.2s ease forwards;
+}
+
+
+/* =========================
+   CROSS
+========================= */
+
+.cross-symbol {
+    animation:
+        floating 4s ease-in-out infinite;
+}
+
+
+/* =========================
+   SCROLL INDICATOR
+========================= */
+
+.scroll-indicator {
+
+    position: absolute;
+
+    bottom: 25px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    text-align: center;
+
+    color: #ddd;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    animation:
+        fadeIn 2s ease forwards;
+
+}
+
+.scroll-arrow {
+
+    color: #f2c94c;
+
+    font-size: 25px;
+
+    animation:
+        floating 2s ease-in-out infinite;
+
+}
+
+
+/* =========================
+   PARTICLES
+========================= */
+
+.particles span {
+
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    background: #f2c94c;
+
+    border-radius: 50%;
+
+    opacity: 0.4;
+
+    animation:
+        particleFloat 8s linear infinite;
+
+}
+
+
+.particles span:nth-child(1) {
+    left: 10%;
+    top: 70%;
+    animation-delay: 0s;
+}
+
+.particles span:nth-child(2) {
+    left: 25%;
+    top: 80%;
+    animation-delay: 2s;
+}
+
+.particles span:nth-child(3) {
+    left: 45%;
+    top: 75%;
+    animation-delay: 4s;
+}
+
+.particles span:nth-child(4) {
+    left: 65%;
+    top: 85%;
+    animation-delay: 1s;
+}
+
+.particles span:nth-child(5) {
+    left: 80%;
+    top: 70%;
+    animation-delay: 3s;
+}
+
+.particles span:nth-child(6) {
+    left: 90%;
+    top: 80%;
+    animation-delay: 5s;
+}
+
+
+@keyframes particleFloat {
+
+    from {
+        transform:
+            translateY(50px);
+
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.5;
+    }
+
+    to {
+        transform:
+            translateY(-500px);
+
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+.reveal {
+
+    opacity: 0;
+
+    transform:
+        translateY(40px);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+
+}
+
+
+.reveal.active {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+
+}

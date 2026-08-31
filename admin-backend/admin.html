@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Faith Assembly Church Muguga</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family: Arial, sans-serif;
+        background: #faf9f6;
+        color: #2b2b2b;
+    }
+    header {
+        background: #7a1f2b;
+        color: #fff;
+        padding: 18px 30px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .wrap {
+        max-width: 720px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+    .card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.08);
+        margin-bottom: 25px;
+    }
+    h2 { color: #7a1f2b; margin-bottom: 15px; }
+    label { display:block; font-size: 13px; font-weight:bold; margin: 12px 0 5px; }
+    input[type=text], input[type=password], select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    button {
+        margin-top: 18px;
+        background: #7a1f2b;
+        color: #fff;
+        border: none;
+        padding: 11px 22px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    button:hover { background: #5e1620; }
+    button.danger { background: #a51f31; }
+    .msg { margin-top: 12px; font-size: 13px; }
+    .msg.error { color: #a51f31; }
+    .msg.ok { color: #1f7a3d; }
+    #dashboard { display: none; }
+    .who {
+        display:flex; justify-content:space-between; align-items:center;
+        margin-bottom: 20px;
+    }
+    .who button { margin:0; background:#eee; color:#333; }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 14px;
+        margin-top: 20px;
+    }
+    .gallery-grid figure {
+        margin: 0;
+        background: #f5f2ed;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .gallery-grid img { width: 100%; height: 110px; object-fit: cover; display:block; }
+    .gallery-grid figcaption { padding: 8px; font-size: 12px; }
+    .gallery-grid .del-btn {
+        width: 100%;
+        border-radius: 0;
+        margin: 0;
+        font-size: 11px;
+        padding: 6px;
+    }
+</style>
+</head>
+<body>
+
+<header>✝ Faith Assembly Church Muguga — Admin Panel</header>
+
+<div class="wrap">
+
+    <!-- LOGIN -->
+    <div class="card" id="loginCard">
+        <h2>Admin Login</h2>
+        <label for="username">Username</label>
+        <input type="text" id="username">
+        <label for="password">Password</label>
+        <input type="password" id="password">
+        <button onclick="login()">Log In</button>
+        <div class="msg error" id="loginMsg"></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard">
+
+        <div class="card">
+            <div class="who">
+                <div>
+                    Logged in as <strong id="whoUser"></strong>
+                    (<span id="whoRole"></span>)
+                </div>
+                <button onclick="logout()">Log Out</button>
+            </div>
+
+            <label for="ministrySelect">Managing gallery for:</label>
+            <select id="ministrySelect" onchange="loadGallery()"></select>
+        </div>
+
+        <div class="card" id="siteAssetsCard" style="display:none;">
+            <h2>🌐 Site-Wide Settings (Super Admin Only)</h2>
+
+            <h3 style="margin-top:10px; color:#7a1f2b;">Home Page Background Photo</h3>
+            <div id="currentBgPreview" style="margin:10px 0;"></div>
+            <label for="bgFileInput">New background photo</label>
+            <input type="file" id="bgFileInput" accept="image/*">
+            <button onclick="uploadHomeBackground()">Update Home Background</button>
+            <div class="msg" id="bgMsg"></div>
+
+            <h3 style="margin-top:30px; color:#7a1f2b;">Latest Sermon</h3>
+            <div id="currentSermonPreview" style="margin:10px 0;"></div>
+
+            <label>Sermon source</label>
+            <select id="sermonType" onchange="toggleSermonInputs()">
+                <option value="youtube">YouTube video</option>
+                <option value="upload">Upload a video file</option>
+            </select>
+
+            <div id="youtubeInputWrap">
+                <label for="youtubeIdInput">YouTube Video ID or full link</label>
+                <input type="text" id="youtubeIdInput" placeholder="e.g. dQw4w9WgXcQ or https://youtube.com/watch?v=dQw4w9WgXcQ">
+            </div>
+
+            <div id="videoUploadWrap" style="display:none;">
+                <label for="sermonFileInput">Video file (mp4, webm, or mov)</label>
+                <input type="file" id="sermonFileInput" accept="video/mp4,video/webm,video/quicktime">
+            </div>
+
+            <button onclick="updateSermon()">Update Latest Sermon</button>
+            <div class="msg" id="sermonMsg"></div>
+        </div>
+
+        <div class="card">
+            <h2>Upload a Photo</h2>
+            <label for="fileInput">Photo (choose from your phone or laptop gallery, or take a new one)</label>
+            <input type="file" id="fileInput" accept="image/*">
+            <label for="captionInput">Caption (optional)</label>
+            <input type="text" id="captionInput" placeholder="e.g. Men's Fellowship Retreat 2026">
+            <button onclick="uploadImage()">Upload</button>
+            <div class="msg" id="uploadMsg"></div>
+        </div>
+
+        <div class="card">
+            <h2>Current Gallery</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ⚠️ Update this once your backend is hosted (see hosting notes).
+const API_BASE = "http://localhost:5000";
+
+const ALL_MINISTRIES = ["men", "women", "youth", "praise", "instruments"];
+
+async function api(path, options = {}) {
+    const res = await fetch(API_BASE + path, {
+        credentials: "include",
+        headers: options.body instanceof FormData ? {} : { "Content-Type": "application/json" },
+        ...options,
+    });
+    return res;
+}
+
+async function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const msg = document.getElementById("loginMsg");
+    msg.textContent = "";
+
+    const res = await api("/api/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+        msg.textContent = data.error || "Login failed";
+        return;
+    }
+    showDashboard(data);
+}
+
+async function logout() {
+    await api("/api/logout", { method: "POST" });
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginCard").style.display = "block";
+}
+
+function showDashboard(user) {
+    document.getElementById("loginCard").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("whoUser").textContent = user.username;
+    document.getElementById("whoRole").textContent =
+        user.role === "superadmin" ? "Super Admin" : `${user.ministry} ministry admin`;
+
+    const select = document.getElementById("ministrySelect");
+    select.innerHTML = "";
+
+    const ministries = user.role === "superadmin" ? ALL_MINISTRIES : [user.ministry];
+    ministries.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = m.charAt(0).toUpperCase() + m.slice(1);
+        select.appendChild(opt);
+    });
+
+    if (user.role === "superadmin") {
+        document.getElementById("siteAssetsCard").style.display = "block";
+        loadSiteAssets();
+    } else {
+        document.getElementById("siteAssetsCard").style.display = "none";
+    }
+
+    loadGallery();
+}
+
+async function loadSiteAssets() {
+    // Home background preview
+    const bgRes = await api("/api/site-assets/home-background");
+    const bgData = await bgRes.json();
+    const bgPreview = document.getElementById("currentBgPreview");
+    bgPreview.innerHTML = bgData.url
+        ? `<img src="${API_BASE}${bgData.url}" style="max-width:260px; border-radius:8px;">`
+        : `<p style="color:#888">Using the default background image (none uploaded yet).</p>`;
+
+    // Sermon preview
+    const sermonRes = await api("/api/site-assets/sermon");
+    const sermonData = await sermonRes.json();
+    const sermonPreview = document.getElementById("currentSermonPreview");
+    if (sermonData.type === "youtube") {
+        sermonPreview.innerHTML = `<p>Current: YouTube video <strong>${sermonData.youtube_id}</strong></p>`;
+    } else if (sermonData.type === "video") {
+        sermonPreview.innerHTML = `<video src="${API_BASE}${sermonData.url}" controls style="max-width:260px; border-radius:8px;"></video>`;
+    } else {
+        sermonPreview.innerHTML = `<p style="color:#888">No sermon set yet (showing placeholder on the site).</p>`;
+    }
+}
+
+function toggleSermonInputs() {
+    const type = document.getElementById("sermonType").value;
+    document.getElementById("youtubeInputWrap").style.display = type === "youtube" ? "block" : "none";
+    document.getElementById("videoUploadWrap").style.display = type === "upload" ? "block" : "none";
+}
+
+async function uploadHomeBackground() {
+    const fileInput = document.getElementById("bgFileInput");
+    const msg = document.getElementById("bgMsg");
+    msg.className = "msg";
+    msg.textContent = "";
+
+    if (!fileInput.files[0]) {
+        msg.className = "msg error";
+        msg.textContent = "Choose a photo first.";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    msg.textContent = "Uploading… this may take a moment for large photos.";
+
+    const res = await api("/api/site-assets/home-background", {
+        method: "POST",
+        body: formData,
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+        msg.className = "msg error";
+        msg.textContent = data.error || "Upload failed";
+        return;
+    }
+
+    msg.className = "msg ok";
+    msg.textContent = "Home background updated!";
+    fileInput.value = "";
+    loadSiteAssets();
+}
+
+function extractYoutubeId(input) {
+    // Accepts a raw ID, or common YouTube URL formats
+    const match = input.match(/(?:youtu\.be\/|v=|embed\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : input.trim();
+}
+
+async function updateSermon() {
+    const type = document.getElementById("sermonType").value;
+    const msg = document.getElementById("sermonMsg");
+    msg.className = "msg";
+    msg.textContent = "";
+
+    if (type === "youtube") {
+        const raw = document.getElementById("youtubeIdInput").value.trim();
+        if (!raw) {
+            msg.className = "msg error";
+            msg.textContent = "Enter a YouTube video ID or link.";
+            return;
+        }
+        const youtube_id = extractYoutubeId(raw);
+
+        const res = await api("/api/site-assets/sermon", {
+            method: "POST",
+            body: JSON.stringify({ type: "youtube", youtube_id }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            msg.className = "msg error";
+            msg.textContent = data.error || "Update failed";
+            return;
+        }
+        msg.className = "msg ok";
+        msg.textContent = "Sermon updated!";
+        document.getElementById("youtubeIdInput").value = "";
+        loadSiteAssets();
+
+    } else {
+        const fileInput = document.getElementById("sermonFileInput");
+        if (!fileInput.files[0]) {
+            msg.className = "msg error";
+            msg.textContent = "Choose a video file first.";
+            return;
+        }
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        msg.textContent = "Uploading video… large files can take a while.";
+
+        const res = await api("/api/site-assets/sermon", {
+            method: "POST",
+            body: formData,
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            msg.className = "msg error";
+            msg.textContent = data.error || "Upload failed";
+            return;
+        }
+        msg.className = "msg ok";
+        msg.textContent = "Sermon video uploaded!";
+        fileInput.value = "";
+        loadSiteAssets();
+    }
+}
+
+async function loadGallery() {
+    const ministry = document.getElementById("ministrySelect").value;
+    const res = await api(`/api/gallery/${ministry}`);
+    const images = await res.json();
+
+    const grid = document.getElementById("galleryGrid");
+    grid.innerHTML = "";
+
+    images.forEach(img => {
+        const fig = document.createElement("figure");
+        fig.innerHTML = `
+            <img src="${API_BASE}${img.url}" alt="${img.caption || ''}">
+            <figcaption>${img.caption || "(no caption)"}</figcaption>
+            <button class="danger del-btn" onclick="deleteImage(${img.id})">Delete</button>
+        `;
+        grid.appendChild(fig);
+    });
+
+    if (images.length === 0) {
+        grid.innerHTML = "<p style='color:#888'>No photos yet.</p>";
+    }
+}
+
+async function uploadImage() {
+    const ministry = document.getElementById("ministrySelect").value;
+    const fileInput = document.getElementById("fileInput");
+    const caption = document.getElementById("captionInput").value;
+    const msg = document.getElementById("uploadMsg");
+    msg.className = "msg";
+    msg.textContent = "";
+
+    if (!fileInput.files[0]) {
+        msg.className = "msg error";
+        msg.textContent = "Choose a photo first.";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    formData.append("caption", caption);
+
+    const res = await api(`/api/gallery/${ministry}`, {
+        method: "POST",
+        body: formData,
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+        msg.className = "msg error";
+        msg.textContent = data.error || "Upload failed";
+        return;
+    }
+
+    msg.className = "msg ok";
+    msg.textContent = "Uploaded!";
+    fileInput.value = "";
+    document.getElementById("captionInput").value = "";
+    loadGallery();
+}
+
+async function deleteImage(id) {
+    if (!confirm("Delete this photo?")) return;
+    const ministry = document.getElementById("ministrySelect").value;
+    await api(`/api/gallery/${ministry}/${id}`, { method: "DELETE" });
+    loadGallery();
+}
+
+// Stay logged in across page refresh
+(async function checkSession() {
+    const res = await api("/api/me");
+    if (res.ok) {
+        const data = await res.json();
+        showDashboard(data);
+    }
+})();
+</script>
+
+</body>
+</html>

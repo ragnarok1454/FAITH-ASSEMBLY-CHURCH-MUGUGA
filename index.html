@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Faith Assembly Church Muguga - Worship, grow and serve together in Muguga, Gatuanyaga, Thika, Kiambu County.">
+
+    <meta name="theme-color" content="#7a1f2b">
+
+    <title>Faith Assembly Church Muguga</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"> 
+
+    <!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animation.css">
+</head>
+
+<body>
+
+<!-- ==============================
+     LOADER
+================================== -->
+
+<div class="page-loader" id="pageLoader">
+    <div class="loader-cross">✝</div>
+    <p>Faith Assembly Church Muguga</p>
+</div>
+
+
+<!-- ==============================
+     HEADER
+================================== -->
+
+<header class="site-header">
+
+    <nav class="navbar">
+
+        <a href="#home" class="logo">
+
+            <span class="logo-cross">✝</span>
+
+            <span>
+                Faith Assembly
+                <small>Church Muguga</small>
+            </span>
+
+        </a>
+
+        <button class="menu-toggle" id="menuToggle">
+            ☰
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#ministries">Ministries</a></li>
+            <li><a href="#live">🔴 Live</a></li>
+            <li><a href="#sermons">Sermons</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#give">Give</a></li>
+            <li><a href="#contact">Contact</a></li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+<!-- ==============================
+     HERO
+================================== -->
+
+<section class="hero" id="home">
+
+    <div class="hero-overlay"></div>
+
+    <script>
+    // ⚠️ Update this once your backend is hosted (see hosting notes).
+    (async function loadHomeBackground() {
+        const API_BASE = "http://localhost:5000";
+        try {
+            const res = await fetch(`${API_BASE}/api/site-assets/home-background`);
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.url) {
+                document.getElementById("home").style.backgroundImage =
+                    `linear-gradient(rgba(35,5,10,0.68), rgba(35,5,10,0.78)), url("${API_BASE}${data.url}")`;
+                document.getElementById("home").style.backgroundSize = "cover";
+                document.getElementById("home").style.backgroundPosition = "center";
+            }
+            // If no url, the default image from style.css keeps showing — no action needed.
+        } catch (err) {
+            console.log("Home background not loaded, using default:", err);
+        }
+    })();
+    </script>
+
+    <div class="hero-content reveal">
+
+        <span class="hero-label">
+            WELCOME TO FAITH ASSEMBLY
+        </span>
+
+        <h1>
+            Faith Assembly
+            <span>Church Muguga</span>
+        </h1>
+
+        <p class="hero-motto">
+            "When Lord moves, we have to move."
+        </p>
+
+        <p class="hero-description">
+            A place where we worship God,
+            grow together in faith and
+            serve our community.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#services" class="btn btn-primary">
+                Plan Your Visit
+            </a>
+
+            <a href="#live" class="btn btn-outline">
+                🔴 Join Us Online
+            </a>
+
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            ↓
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==============================
+     BIBLE VERSE
+================================== -->
+
+<section class="scripture-section">
+
+    <div class="container">
+
+        <div class="scripture-content reveal">
+
+            <div class="scripture-cross">
+                ✝
+            </div>
+
+            <p class="scripture-text">
+                "For where two or three are gathered
+                together in my name, there am I in
+                the midst of them."
+            </p>
+
+            <span class="scripture-reference">
+                Matthew 18:20
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==============================
+     ABOUT
+================================== -->
+
+<section class="about-section" id="about">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                WELCOME HOME
+            </span>
+
+            <h2>
+                About Faith Assembly Church Muguga
+            </h2>
+
+            <p>
+                A family of believers growing together
+                in faith, love and service.
+            </p>
+
+        </div>
+
+
+        <div class="about-grid">
+
+            <div class="about-image reveal">
+
+                <img
+                    src="images/youth-group.jpg"
+                    alt="Faith Assembly Church Muguga Youth">
+
+                <div class="image-caption">
+
+                    <span>
+                        FAITH ASSEMBLY CHURCH MUGUGA
+                    </span>
+
+                    <strong>
+                        Our Youth Fellowship
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-content reveal">
+
+                <span class="about-label">
+                    OUR CHURCH
+                </span>
+
+                <h3>
+                    A Place to Worship,
+                    Grow and Serve
+                </h3>
+
+                <p>
+                    Faith Assembly Church Muguga is a
+                    Christian community committed to
+                    worshipping God, growing in faith
+                    and serving people within our
+                    community and beyond.
+                </p>
+
+                <p>
+                    We believe that church is more than
+                    a place of worship. It is a family
+                    where people can grow spiritually,
+                    build meaningful relationships and
+                    discover their purpose in serving
+                    God and others.
+                </p>
+
+                <div class="motto-box">
+
+                    <span>
+                        OUR MOTTO
+                    </span>
+
+                    <blockquote>
+                        "When Lord moves,
+                        we have to move."
+                    </blockquote>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==============================
+     SERVICE TIMES
+================================== -->
+
+<section class="services-section" id="services">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                JOIN US
+            </span>
+
+            <h2>
+                Service Times
+            </h2>
+
+            <p>
+                We'd love to worship with you.
+            </p>
+
+        </div>
+
+
+        <div class="services-grid">
+
+
+            <div class="service-card reveal">
+
+                <div class="service-icon">
+                    ✝
+                </div>
+
+                <h3>
+                    Sunday Service
+                </h3>
+
+                <p class="service-time">
+                    10:00 AM - 1:00 PM
+                </p>
+
+                <p>
+                    Join us for worship,
+                    fellowship and the Word.
+                </p>
+
+            </div>
+
+
+            <div class="service-card reveal">
+
+                <div class="service-icon">
+                    📖
+                </div>
+
+                <h3>
+                    Bible Study
+                </h3>
+
+                <p class="service-time">
+                    Sunday<br>
+                    9:00 AM - 10:00 AM
+                </p>
+
+                <p>
+                    Grow deeper in God's Word
+                    together.
+                </p>
+
+            </div>
+
+
+            <div class="service-card reveal">
+
+                <div class="service-icon">
+                    🙏
+                </div>
+
+                <h3>
+                    Prayer Meeting
+                </h3>
+
+                <p class="service-time">
+                    Wednesday: 3:00 PM - 5:00 PM
+                    <br><br>
+                    Friday: 6:00 PM - 7:00 PM
+                </p>
+
+                <p>
+                    Come together in prayer
+                    and fellowship.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     🔴 LIVE STREAM
+================================================== -->
+
+<section class="live-section" id="live">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                JOIN US ONLINE
+            </span>
+
+            <h2>
+                🔴 Live Worship
+            </h2>
+
+            <p>
+                Worship with Faith Assembly Church
+                Muguga from wherever you are.
+            </p>
+
+        </div>
+
+
+        <div class="live-container reveal">
+
+            <div class="live-badge">
+
+                <span class="live-dot"></span>
+
+                LIVESTREAM
+
+            </div>
+
+
+            <div class="video-container">
+
+                <!--
+                    LATER WE WILL PUT THE
+                    YOUTUBE LIVESTREAM HERE
+                -->
+
+                <div class="video-placeholder">
+
+                    <div class="play-icon">
+                        ▶
+                    </div>
+
+                    <h3>
+                        Faith Assembly Church Muguga
+                    </h3>
+
+                    <p>
+                        Our livestream will appear
+                        here when the church goes live.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="live-info">
+
+                <h3>
+                    Worship With Us Online
+                </h3>
+
+                <p>
+                    Can't make it to church physically?
+                    You will be able to worship,
+                    listen to the Word and fellowship
+                    with us online.
+                </p>
+
+                <div class="live-actions">
+
+                    <a href="#" class="btn btn-primary">
+                        Watch Live
+                    </a>
+
+                    <a href="#contact"
+                       class="btn btn-outline-dark">
+                        Contact Church
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     🎥 LATEST SERMON
+================================================== -->
+<!-- ==========================================
+     MINISTRIES SECTION
+========================================== -->
+
+<section id="ministries" class="ministries-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+            <span class="section-label">SERVING TOGETHER</span>
+
+            <h2>Our Ministries</h2>
+
+            <p>
+                There is a place for everyone at Faith Assembly Church Muguga.
+                Our ministries help us grow in faith, build relationships,
+                discover our gifts and serve God and our community.
+            </p>
+        </div>
+
+
+        <!-- MINISTRY CARDS -->
+
+        <div class="ministries-grid">
+
+
+            <!-- YOUTH -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">👥</div>
+
+                <h3>Youth Ministry</h3>
+
+                <p>
+                    A vibrant community where young people grow in faith,
+                    build meaningful friendships and discover their purpose
+                    in Christ.
+                </p>
+
+                <a href="#youth" class="ministry-link">
+                    Explore Youth →
+                </a>
+
+            </div>
+
+
+            <!-- WOMEN -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">🌸</div>
+
+                <h3>Women's Ministry</h3>
+
+                <p>
+                    Empowering women through prayer, fellowship, spiritual
+                    growth and service to God and the community.
+                </p>
+
+                <a href="pages/women.html" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+
+            <!-- MEN -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">🤝</div>
+
+                <h3>Men's Ministry</h3>
+
+                <p>
+                    Building strong men of faith who lead, serve and make
+                    a positive difference in their families and community.
+                </p>
+
+                <a href="pages/men.html" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+
+            <!-- CHILDREN -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">📖</div>
+
+                <h3>Children / Sunday School</h3>
+
+                <p>
+                    Helping children discover God's love and grow in their
+                    understanding of the Word through learning and fellowship.
+                </p>
+
+                <a href="#contact" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+
+            <!-- TEENS -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">⭐</div>
+
+                <h3>Teens Ministry</h3>
+
+                <p>
+                    Creating a safe and encouraging environment where teens
+                    can grow spiritually, develop confidence and build
+                    positive relationships.
+                </p>
+
+                <a href="#contact" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+
+            <!-- USHERING -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">🙌</div>
+
+                <h3>Ushering Ministry</h3>
+
+                <p>
+                    Serving God's people with love and hospitality while
+                    helping create a welcoming atmosphere during services.
+                </p>
+
+                <a href="#contact" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+
+            <!-- PRAISE -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">🎶</div>
+
+                <h3>Praise & Worship</h3>
+
+                <p>
+                    Leading the congregation into worship through music,
+                    praise and heartfelt service to God.
+                </p>
+
+                <a href="pages/praise.html" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+
+            <!-- INSTRUMENTS -->
+
+            <div class="ministry-card">
+
+                <div class="ministry-icon">🎹</div>
+
+                <h3>Instrument Team</h3>
+
+                <p>
+                    Using musical gifts and talents to support worship,
+                    praise and the ministry of the church.
+                </p>
+
+                <a href="pages/instruments.html" class="ministry-link">
+                    Learn More →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==========================================
+     YOUTH MINISTRY FEATURE
+========================================== -->
+
+<section id="youth" class="youth-feature">
+
+    <div class="container">
+
+        <div class="youth-grid">
+
+
+            <!-- PHOTO -->
+
+            <div class="youth-photo">
+
+                <img
+                    src="images/youth-group.jpg"
+                    alt="Faith Assembly Church Muguga Youth">
+
+            </div>
+
+
+            <!-- TEXT -->
+
+            <div class="youth-content">
+
+                <span class="section-label">
+                    YOUTH MINISTRY
+                </span>
+
+                <h2>
+                    Young People. Strong Faith. Purpose.
+                </h2>
+
+                <p>
+                    The Youth Ministry of Faith Assembly Church Muguga
+                    provides a place where young people can worship,
+                    learn God's Word, build friendships and discover
+                    their purpose.
+                </p>
+
+                <p>
+                    Through fellowship, worship, prayer and service,
+                    we encourage young people to become strong,
+                    responsible and Christ-centered members of the
+                    community.
+                </p>
+
+                <div class="youth-verse">
+
+                    <span>✝</span>
+
+                    <p>
+                        "Let no one despise your youth, but be an example
+                        to the believers..."
+                    </p>
+
+                    <strong>
+                        1 Timothy 4:12
+                    </strong>
+
+                </div>
+
+                <a href="#contact" class="btn">
+                    Join the Youth Ministry
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<section class="sermon-section" id="sermons">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                THE WORD
+            </span>
+
+            <h2>
+                🎥 Latest Sermon
+            </h2>
+
+            <p>
+                Watch and listen to messages
+                from Faith Assembly Church Muguga.
+            </p>
+
+        </div>
+
+
+        <div class="sermon-card reveal">
+
+
+            <div class="sermon-video">
+
+                <div class="sermon-placeholder">
+
+                    <span>
+                        ▶
+                    </span>
+
+                    <p>
+                        Latest sermon video
+                        will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="sermon-info">
+
+                <span class="sermon-label">
+                    LATEST MESSAGE
+                </span>
+
+                <h3>
+                    Sermon Title
+                </h3>
+
+                <p>
+                    The latest sermon will be
+                    updated here by the church
+                    administrator.
+                </p>
+
+                <div class="sermon-meta">
+
+                    🎤 Pastor Daniel Kiarie
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+<!-- ==========================================
+     UPCOMING EVENTS
+========================================== -->
+
+<section class="events-section" id="events">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                STAY CONNECTED
+            </span>
+
+            <h2>
+                Upcoming Events
+            </h2>
+
+            <p>
+                Join us for worship, fellowship, prayer
+                and special activities at Faith Assembly
+                Church Muguga.
+            </p>
+
+        </div>
+
+
+        <div class="events-grid">
+
+
+            <!-- EVENT 1 -->
+
+            <article class="event-card reveal">
+
+                <div class="event-date">
+
+                    <span class="event-day">
+                        SUN
+                    </span>
+
+                    <strong>
+                        01
+                    </strong>
+
+                    <span>
+                        SERVICE
+                    </span>
+
+                </div>
+
+
+                <div class="event-content">
+
+                    <span class="event-category">
+                        WORSHIP
+                    </span>
+
+                    <h3>
+                        Sunday Worship Service
+                    </h3>
+
+                    <p>
+                        Join us as we gather together for
+                        worship, fellowship and the Word of God.
+                    </p>
+
+                    <div class="event-info">
+
+                        <span>🕐 10:00 AM - 1:00 PM</span>
+
+                        <span>📍 Faith Assembly Church Muguga</span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- EVENT 2 -->
+
+            <article class="event-card reveal">
+
+                <div class="event-date">
+
+                    <span class="event-day">
+                        SUN
+                    </span>
+
+                    <strong>
+                        01
+                    </strong>
+
+                    <span>
+                        BIBLE
+                    </span>
+
+                </div>
+
+
+                <div class="event-content">
+
+                    <span class="event-category">
+                        BIBLE STUDY
+                    </span>
+
+                    <h3>
+                        Bible Study
+                    </h3>
+
+                    <p>
+                        Come and grow together as we study
+                        God's Word and strengthen our faith.
+                    </p>
+
+                    <div class="event-info">
+
+                        <span>🕐 9:00 AM - 10:00 AM</span>
+
+                        <span>📍 Church</span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- EVENT 3 -->
+
+            <article class="event-card reveal">
+
+                <div class="event-date">
+
+                    <span class="event-day">
+                        WED
+                    </span>
+
+                    <strong>
+                        03
+                    </strong>
+
+                    <span>
+                        PRAYER
+                    </span>
+
+                </div>
+
+
+                <div class="event-content">
+
+                    <span class="event-category">
+                        PRAYER
+                    </span>
+
+                    <h3>
+                        Prayer Meeting
+                    </h3>
+
+                    <p>
+                        A time of prayer, fellowship and seeking
+                        God's direction for our church and community.
+                    </p>
+
+                    <div class="event-info">
+
+                        <span>🕐 3:00 PM - 5:00 PM</span>
+
+                        <span>📍 Church</span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+
+        <div class="events-note reveal">
+
+            <span>✝</span>
+
+            <p>
+                More church events and announcements
+                will be added here.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==========================================
+     GIVING / TITHES
+========================================== -->
+
+<section id="give" class="giving-section">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                GIVE WITH A CHEERFUL HEART
+            </span>
+
+            <h2>
+                Give & Support the Ministry
+            </h2>
+
+            <p>
+                Your generosity helps Faith Assembly Church Muguga
+                serve God's people, support ministry and reach
+                the community.
+            </p>
+
+        </div>
+
+
+        <div class="giving-card reveal">
+
+            <div class="giving-icon">
+                ✝
+            </div>
+
+            <h3>
+                M-PESA Giving
+            </h3>
+
+            <p class="giving-intro">
+                You can give your tithes and offerings conveniently
+                through M-PESA.
+            </p>
+
+
+            <!-- PAYBILL -->
+
+            <div class="mpesa-box">
+
+                <div class="mpesa-label">
+                    PAYBILL NUMBER
+                </div>
+
+                <div class="mpesa-number" id="paybillNumber">
+                    247247
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyGivingNumber('247247', this)">
+
+                    COPY PAYBILL
+
+                </button>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="mpesa-box">
+
+                <div class="mpesa-label">
+                    ACCOUNT NUMBER
+                </div>
+
+                <div class="mpesa-number" id="accountNumber">
+                    511429
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyGivingNumber('511429', this)">
+
+                    COPY ACCOUNT
+
+                </button>
+
+            </div>
+
+
+            <div class="giving-note">
+
+                <strong>Thank you for your generosity.</strong>
+
+                <p>
+                    Give as you are led and may God bless
+                    you for supporting His work.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="giving-verse reveal">
+
+            <span>✝</span>
+
+            <p>
+                "God loves a cheerful giver."
+            </p>
+
+            <strong>
+                2 Corinthians 9:7
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     📞 CONTACT
+================================================== -->
+
+<section class="contact-section" id="contact">
+
+    <div class="container">
+
+        <div class="section-heading reveal">
+
+            <span class="small-title">
+                COME WORSHIP WITH US
+            </span>
+
+            <h2>
+                Visit Us
+            </h2>
+
+            <p>
+                We'd love to welcome you.
+            </p>
+
+        </div>
+
+
+        <div class="contact-grid">
+
+
+            <div class="contact-info reveal">
+
+
+                <div class="contact-item">
+
+                    <span class="contact-icon">
+                        📍
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Address
+                        </h3>
+
+                        <p>
+                            Muguga, Gatuanyaga,
+                            Thika, Kiambu County,
+                            Kenya
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <span class="contact-icon">
+                        📞
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Phone
+                        </h3>
+
+                        <p>
+                            <a href="tel:0727906898">
+                                0727906898
+                            </a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <span class="contact-icon">
+                        ✉️
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Email
+                        </h3>
+
+                        <p>
+                            <a href="mailto:MWAURAEUTICUS@GMAIL.COM">
+                                MWAURAEUTICUS@GMAIL.COM
+                            </a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <span class="contact-icon">
+                        📱
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Social Media
+                        </h3>
+
+                        <p>
+                            Church social media
+                            links will be added here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="map-wrap reveal">
+
+                <iframe
+                    src="https://www.google.com/maps?q=Gatuanyaga,Thika,Kenya&output=embed"
+                    title="Faith Assembly Church Muguga Location"
+                    loading="lazy">
+                </iframe>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <h3>
+                    ✝ Faith Assembly Church Muguga
+                </h3>
+
+                <p>
+                    "When Lord moves,
+                    we have to move."
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#ministries">Ministries</a>
+                <a href="#live">Live</a>
+                <a href="#sermons">Sermons</a>
+                <a href="#events">Events</a>
+                <a href="#contact">Contact</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Faith Assembly Church Muguga.
+                All rights reserved.
+            </p>
+
+            <p>
+                Built with faith and purpose.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- JAVASCRIPT -->
+
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const loader = document.getElementById("pageLoader");
+
+    if (loader) {
+        loader.style.display = "none";
+    }
+
+});
+</script>
+
+</body>
+
+</html>
