@@ -35,6 +35,7 @@ VALID_MINISTRIES = {"men", "women", "youth", "praise", "instruments"}
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("APP_SECRET_KEY", "change-this-in-production")
+app.config.update( SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True, )
 
 # Video files can be large — raise the default upload limit to 300MB.
 # (If you host on a free-tier service, check its own upload limit too —
