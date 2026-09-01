@@ -91,7 +91,7 @@
     <script>
     // ⚠️ Update this once your backend is hosted (see hosting notes).
     (async function loadHomeBackground() {
-        const API_BASE = "http://localhost:5000";
+        const API_BASE = "https://ragnar1454.pythonanywhere.com";
         try {
             const res = await fetch(`${API_BASE}/api/site-assets/home-background`);
             if (!res.ok) return;
