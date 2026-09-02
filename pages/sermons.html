@@ -117,7 +117,7 @@ with the actual YouTube video ID.
 <script>
 // ⚠️ Update this once your backend is hosted (see hosting notes).
 (async function loadLatestSermon() {
-    const API_BASE = "http://localhost:5000";
+    const API_BASE = "https://ragnar1454.pythonanywhere.com";
     try {
         const res = await fetch(`${API_BASE}/api/site-assets/sermon`);
         if (!res.ok) return;
