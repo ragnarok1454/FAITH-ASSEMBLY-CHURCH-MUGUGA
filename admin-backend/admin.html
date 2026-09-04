@@ -113,7 +113,7 @@
             </div>
 
             <label for="ministrySelect">Managing gallery for:</label>
-            <select id="ministrySelect" onchange="loadGallery(); loadEvents();"></select>
+            <select id="ministrySelect" onchange="loadGallery(); loadEvents(); loadAnnouncements();"></select>
         </div>
 
         <div class="card" id="siteAssetsCard" style="display:none;">
@@ -160,7 +160,16 @@
         </div>
 
         <div class="card">
-            <h2>Upcoming Events</h2>
+            <h2>Announcements</h2>
+            <label for="announceTitleInput">Title</label>
+            <input type="text" id="announceTitleInput" placeholder="e.g. Wedding Ceremony">
+            <label for="announceMessageInput">Message</label>
+            <input type="text" id="announceMessageInput" placeholder="e.g. Join us in celebrating the wedding of...">
+            <button onclick="addAnnouncement()">Post Announcement</button>
+            <div class="msg" id="announceMsg"></div>
+
+            <div id="announcementsList" style="margin-top:20px;"></div>
+        </div>
             <label for="eventTitleInput">Event title</label>
             <input type="text" id="eventTitleInput" placeholder="e.g. Men's Fellowship Retreat">
             <label for="eventDescInput">Description (optional)</label>
@@ -250,6 +259,7 @@ function showDashboard(user) {
 
     loadGallery();
     loadEvents();
+    loadAnnouncements();
 }
 
 async function loadSiteAssets() {
@@ -526,6 +536,76 @@ async function deleteEvent(id) {
     loadEvents();
 }
 
+// ---------------------------------------------------------------------------
+// Announcements
+// ---------------------------------------------------------------------------
+
+async function loadAnnouncements() {
+    const ministry = document.getElementById("ministrySelect").value;
+    const res = await api(`/api/announcements/${ministry}`);
+    const items = await res.json();
+
+    const list = document.getElementById("announcementsList");
+    list.innerHTML = "";
+
+    if (items.length === 0) {
+        list.innerHTML = "<p style='color:#888'>No announcements posted yet.</p>";
+        return;
+    }
+
+    items.forEach(a => {
+        const row = document.createElement("div");
+        row.style.cssText = "background:#f5f2ed; border-radius:8px; padding:12px; margin-bottom:10px;";
+        row.innerHTML = `
+            <strong>${a.title}</strong>
+            <div style="font-size:13px; margin-top:4px;">${a.message}</div>
+            <div style="font-size:11px; color:#888; margin-top:4px;">${a.created_at}</div>
+            <button class="danger" style="margin-top:8px; font-size:12px; padding:6px 12px;" onclick="deleteAnnouncement(${a.id})">Delete</button>
+        `;
+        list.appendChild(row);
+    });
+}
+
+async function addAnnouncement() {
+    const ministry = document.getElementById("ministrySelect").value;
+    const title = document.getElementById("announceTitleInput").value.trim();
+    const message = document.getElementById("announceMessageInput").value.trim();
+    const msg = document.getElementById("announceMsg");
+    msg.className = "msg";
+    msg.textContent = "";
+
+    if (!title || !message) {
+        msg.className = "msg error";
+        msg.textContent = "Title and message are both required.";
+        return;
+    }
+
+    const res = await api(`/api/announcements/${ministry}`, {
+        method: "POST",
+        body: JSON.stringify({ title, message }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+        msg.className = "msg error";
+        msg.textContent = data.error || "Failed to post announcement";
+        return;
+    }
+
+    msg.className = "msg ok";
+    msg.textContent = "Posted!";
+    document.getElementById("announceTitleInput").value = "";
+    document.getElementById("announceMessageInput").value = "";
+    loadAnnouncements();
+}
+
+async function deleteAnnouncement(id) {
+    if (!confirm("Delete this announcement?")) return;
+    const ministry = document.getElementById("ministrySelect").value;
+    await api(`/api/announcements/${ministry}/${id}`, { method: "DELETE" });
+    loadAnnouncements();
+}
+
 // Stay logged in across page refresh
 (async function checkSession() {
     const res = await api("/api/me");
@@ -538,4 +618,3 @@ async function deleteEvent(id) {
 
 </body>
 </html>
-
