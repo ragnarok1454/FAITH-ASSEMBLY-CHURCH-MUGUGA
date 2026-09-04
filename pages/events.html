@@ -77,15 +77,16 @@ Church-wide activities and gatherings.
 </div>
 
 
-<div class="site-card center">
+<div class="card-grid" id="churchEventsGrid">
+
+<div class="site-card center" id="eventsPlaceholder">
 
 <h3>
 Events Calendar
 </h3>
 
 <p>
-The Google Calendar will be connected
-here later.
+No church-wide events posted yet.
 </p>
 
 <p>
@@ -94,6 +95,32 @@ on their individual ministry pages.
 </p>
 
 </div>
+
+</div>
+
+<script>
+// ⚠️ Update this once your backend is hosted (see hosting notes).
+(async function loadChurchEvents() {
+    const API_BASE = "https://ragnar1454.pythonanywhere.com";
+    try {
+        const res = await fetch(`${API_BASE}/api/events/church`);
+        if (!res.ok) return;
+        const events = await res.json();
+        if (events.length === 0) return;
+
+        const grid = document.getElementById("churchEventsGrid");
+        grid.innerHTML = events.map(ev => `
+            <div class="site-card">
+                <h3>${ev.title}</h3>
+                ${ev.event_date ? `<p><strong>📅 ${ev.event_date}${ev.event_time ? " at " + ev.event_time : ""}</strong></p>` : ""}
+                ${ev.description ? `<p>${ev.description}</p>` : ""}
+            </div>
+        `).join("");
+    } catch (err) {
+        console.log("Events not loaded, showing placeholder:", err);
+    }
+})();
+</script>
 
 </div>
 
