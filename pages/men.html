@@ -242,9 +242,9 @@
         </div>
 
 
-        <div class="events-grid">
+        <div class="events-grid" id="menEventsGrid">
 
-            <div class="event-card">
+            <div class="event-card" id="menEventsPlaceholder">
 
                 <div class="event-icon">
                     📅
@@ -266,6 +266,31 @@
             </div>
 
         </div>
+
+        <script>
+        // ⚠️ Update this once your backend is hosted (see hosting notes).
+        (async function loadMenEvents() {
+            const API_BASE = "https://ragnar1454.pythonanywhere.com";
+            try {
+                const res = await fetch(`${API_BASE}/api/events/men`);
+                if (!res.ok) return;
+                const events = await res.json();
+                if (events.length === 0) return;
+
+                const grid = document.getElementById("menEventsGrid");
+                grid.innerHTML = events.map(ev => `
+                    <div class="event-card">
+                        <div class="event-icon">📅</div>
+                        <h3>${ev.title}</h3>
+                        ${ev.description ? `<p>${ev.description}</p>` : ""}
+                        <span>${ev.event_date || ""}${ev.event_time ? " at " + ev.event_time : ""}</span>
+                    </div>
+                `).join("");
+            } catch (err) {
+                console.log("Men events not loaded, showing placeholder:", err);
+            }
+        })();
+        </script>
 
     </div>
 
@@ -334,7 +359,9 @@ const MEN_GALLERY_API = "https://ragnar1454.pythonanywhere.com";
 
         grid.innerHTML = images.map(img => `
             <figure class="gallery-item">
-                <img src="${MEN_GALLERY_API}${img.url}" alt="${img.caption || 'Men Ministry'}">
+                ${img.media_type === "video"
+                    ? `<video src="${MEN_GALLERY_API}${img.url}" controls style="width:100%; height:220px; object-fit:cover; display:block;"></video>`
+                    : `<img src="${MEN_GALLERY_API}${img.url}" alt="${img.caption || 'Men Ministry'}">`}
                 <figcaption>${img.caption || ""}</figcaption>
             </figure>
         `).join("");
