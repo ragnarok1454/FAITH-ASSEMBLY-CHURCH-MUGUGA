@@ -41,7 +41,7 @@
 }
 
 .page-hero .small-title {
-    color: #f2c94c;
+    color: #d4a537;
 }
 
 .section-heading {
@@ -51,13 +51,26 @@
 }
 
 .section-heading h2 {
+    font-family: "Playfair Display", Georgia, serif;
     font-size: 34px;
-    color: #7a1f2b;
-    margin: 8px 0;
+    font-weight: 600;
+    color: #6b1420;
+    margin: 8px 0 18px;
+}
+
+.section-heading h2::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 3px;
+    margin: 16px auto 0;
+    background: linear-gradient(90deg, transparent, #d4a537, transparent);
+    border-radius: 2px;
 }
 
 .section-heading p {
     color: #666;
+    font-family: "Inter", Arial, sans-serif;
 }
 
 .card-grid {
@@ -70,25 +83,39 @@
 
 .site-card {
     background: #fff;
-    border: 1px solid #eee;
+    border: 1px solid #f0e9dd;
     border-radius: 15px;
     padding: 28px;
 
     box-shadow:
-        0 8px 24px rgba(0,0,0,.06);
+        0 8px 24px rgba(107,20,32,.10);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.site-card:hover {
+    transform: translateY(-6px);
+    border-color: #d4a537;
+    box-shadow:
+        0 16px 34px rgba(107,20,32,.16);
 }
 
 .site-card h3 {
-    color: #7a1f2b;
+    font-family: "Playfair Display", Georgia, serif;
+    color: #6b1420;
     margin-bottom: 10px;
 }
 
 .site-card p {
     color: #666;
+    font-family: "Inter", Arial, sans-serif;
 }
 
 .page-wrap.alt {
-    background: #faf9f6;
+    background: #faf6ef;
 }
 
 .badge {
@@ -98,9 +125,9 @@
 
     border-radius: 20px;
 
-    background: #f2c94c;
+    background: #d4a537;
 
-    color: #3a0d13;
+    color: #3d0a12;
 
     font-family: Arial, sans-serif;
 
@@ -112,14 +139,14 @@
 .notice {
     padding: 24px;
 
-    border-left: 5px solid #7a1f2b;
+    border-left: 5px solid #6b1420;
 
     background: #fff;
 
     border-radius: 10px;
 
     box-shadow:
-        0 5px 18px rgba(0,0,0,.06);
+        0 5px 18px rgba(107,20,32,.10);
 }
 
 .notice small {
@@ -143,17 +170,35 @@
 
     background: #fff;
 
+    border: 1px solid #f0e9dd;
+
     box-shadow:
-        0 6px 20px rgba(0,0,0,.07);
+        0 6px 20px rgba(107,20,32,.11);
+
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.gallery-item img {
+.gallery-item:hover {
+    border-color: #d4a537;
+    box-shadow:
+        0 14px 32px rgba(107,20,32,.18);
+}
+
+.gallery-item img,
+.gallery-item video {
     width: 100%;
     height: 220px;
 
     object-fit: cover;
 
     display: block;
+
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img,
+.gallery-item:hover video {
+    transform: scale(1.08);
 }
 
 .gallery-item figcaption {
@@ -179,7 +224,7 @@
 .paybill {
     font-size: 28px;
 
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-weight: bold;
 }
@@ -201,7 +246,23 @@
 .ministry-intro img {
     width: 100%;
 
+    display: block;
+
     border-radius: 15px;
+
+    border: 3px solid #fff;
+
+    outline: 1px solid #d4a537;
+    outline-offset: 4px;
+
+    box-shadow:
+        0 14px 34px rgba(107,20,32,.16);
+
+    transition: transform 0.5s ease;
+}
+
+.ministry-intro img:hover {
+    transform: scale(1.02);
 }
 
 @media (max-width: 700px) {
