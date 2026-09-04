@@ -101,7 +101,7 @@
 
 .scroll-arrow {
 
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 25px;
 
@@ -122,7 +122,7 @@
     width: 4px;
     height: 4px;
 
-    background: #f2c94c;
+    background: #d4a537;
 
     border-radius: 50%;
 
@@ -219,4 +219,28 @@
     transform:
         translateY(0);
 
+}
+
+
+/* =========================
+   GOLD DIVIDER SHIMMER
+   One signature, deliberate motion moment for section dividers —
+   a slow pass of light, echoing candlelight/worship radiance.
+========================= */
+
+@keyframes dividerShimmer {
+
+    0% {
+        background-position: -100px 0;
+    }
+
+    100% {
+        background-position: 200px 0;
+    }
+
+}
+
+.section-heading h2::after {
+    background-size: 200px 3px;
+    animation: dividerShimmer 3.5s ease-in-out infinite;
 }
