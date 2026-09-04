@@ -10,6 +10,11 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Announcements | Faith Assembly Church Muguga</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/animation.css">
 <link rel="stylesheet" href="../css/pages.css">
@@ -77,24 +82,49 @@ whole church.
 </div>
 
 
-<div class="notice">
+<div id="churchAnnouncementsList">
 
-<span class="badge">SAMPLE</span>
+<div class="notice" id="announcementsPlaceholder">
+
+<span class="badge">NONE YET</span>
 
 <h3>
 Church-wide Announcement
 </h3>
 
 <p>
-This area will contain important announcements
-from church leadership.
+No church-wide announcements posted yet.
+Check back soon, or see your ministry page for
+ministry-specific updates.
 </p>
 
-<small>
-Posted date will appear here
-</small>
+</div>
 
 </div>
+
+<script>
+// ⚠️ Update this once your backend is hosted (see hosting notes).
+(async function loadChurchAnnouncements() {
+    const API_BASE = "https://ragnar1454.pythonanywhere.com";
+    try {
+        const res = await fetch(`${API_BASE}/api/announcements/church`);
+        if (!res.ok) return;
+        const items = await res.json();
+        if (items.length === 0) return;
+
+        const list = document.getElementById("churchAnnouncementsList");
+        list.innerHTML = items.map(a => `
+            <div class="notice" style="margin-bottom:20px;">
+                <h3>${a.title}</h3>
+                <p>${a.message}</p>
+                <small>${a.created_at}</small>
+            </div>
+        `).join("");
+    } catch (err) {
+        console.log("Announcements not loaded, showing placeholder:", err);
+    }
+})();
+</script>
 
 
 <br>
