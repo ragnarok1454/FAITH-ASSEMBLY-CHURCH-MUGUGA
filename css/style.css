@@ -15,7 +15,7 @@ html {
 body {
     font-family: "Inter", Arial, sans-serif;
     color: #2b2b2b;
-    background: #faf9f6;
+    background: #faf6ef;
     line-height: 1.7;
 }
 
@@ -51,7 +51,7 @@ section {
 .page-loader {
     position: fixed;
     inset: 0;
-    background: #3a0d13;
+    background: #3d0a12;
     color: white;
     z-index: 9999;
 
@@ -71,7 +71,7 @@ section {
 
 .loader-cross {
     font-size: 50px;
-    color: #f2c94c;
+    color: #d4a537;
     animation: floating 2s ease-in-out infinite;
 }
 
@@ -89,7 +89,7 @@ section {
     top: 0;
     z-index: 1000;
 
-    background: rgba(122, 31, 43, 0.97);
+    background: rgba(107, 20, 32, 0.97);
 
     box-shadow:
         0 3px 20px rgba(0, 0, 0, 0.12);
@@ -125,7 +125,7 @@ section {
 }
 
 .logo-cross {
-    color: #f2c94c;
+    color: #d4a537;
     font-size: 28px;
 }
 
@@ -138,16 +138,39 @@ section {
 }
 
 .nav-links a {
+    position: relative;
+
     color: white;
 
     font-size: 13px;
     font-weight: 600;
 
-    transition: 0.25s;
+    transition: color 0.25s;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 100%;
+    height: 2px;
+
+    background: #d4a537;
+
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #f2c94c;
+    color: #d4a537;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
 .menu-toggle {
@@ -211,7 +234,7 @@ section {
 }
 
 .hero-label {
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 13px;
     font-weight: 700;
@@ -228,7 +251,7 @@ section {
 
 .hero h1 span {
     display: block;
-    color: #f2c94c;
+    color: #d4a537;
 }
 
 .hero-motto {
@@ -303,15 +326,15 @@ section {
 }
 
 .btn-primary {
-    background: #7a1f2b;
+    background: #6b1420;
     color: white;
 
     box-shadow:
-        0 8px 20px rgba(122, 31, 43, 0.2);
+        0 8px 20px rgba(107, 20, 32, 0.2);
 }
 
 .btn-primary:hover {
-    background: #5e1620;
+    background: #4a0f18;
 }
 
 .btn-outline {
@@ -321,16 +344,16 @@ section {
 
 .btn-outline:hover {
     background: white;
-    color: #7a1f2b;
+    color: #6b1420;
 }
 
 .btn-outline-dark {
-    border: 1px solid #7a1f2b;
-    color: #7a1f2b;
+    border: 1px solid #6b1420;
+    color: #6b1420;
 }
 
 .btn-outline-dark:hover {
-    background: #7a1f2b;
+    background: #6b1420;
     color: white;
 }
 
@@ -342,7 +365,7 @@ section {
 .scripture-section {
     padding: 65px 0;
 
-    background: #3a0d13;
+    background: #3d0a12;
 
     color: white;
 
@@ -355,7 +378,7 @@ section {
 }
 
 .scripture-cross {
-    color: #f2c94c;
+    color: #d4a537;
     font-size: 30px;
 }
 
@@ -369,7 +392,7 @@ section {
 }
 
 .scripture-reference {
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 13px;
     font-weight: 700;
@@ -403,7 +426,7 @@ section {
 }
 
 .section-heading h2 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: clamp(32px, 5vw, 44px);
 
@@ -422,7 +445,7 @@ section {
 ================================================== */
 
 .about-section {
-    background: #faf9f6;
+    background: #faf6ef;
 }
 
 .about-grid {
@@ -499,7 +522,7 @@ section {
 .image-caption span {
     display: block;
 
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 10px;
     font-weight: 800;
@@ -512,7 +535,7 @@ section {
 }
 
 .about-content h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 35px;
 
@@ -541,7 +564,7 @@ section {
 
     padding: 22px 25px;
 
-    border-left: 4px solid #f2c94c;
+    border-left: 4px solid #d4a537;
 
     background: white;
 
@@ -563,7 +586,7 @@ section {
 }
 
 .motto-box blockquote {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-family: "Playfair Display", Georgia, serif;
 
@@ -594,7 +617,7 @@ section {
 
     text-align: center;
 
-    background: #faf9f6;
+    background: #faf6ef;
 
     border: 1px solid #eee;
 
@@ -617,7 +640,7 @@ section {
 }
 
 .service-card h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 23px;
 
@@ -682,7 +705,7 @@ section {
 }
 
 .ministry-card h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 22px;
 
@@ -704,9 +727,9 @@ section {
 
     border-radius: 20px;
 
-    background: #f2c94c;
+    background: #d4a537;
 
-    color: #3a0d13;
+    color: #3d0a12;
 
     font-size: 9px;
     font-weight: 800;
@@ -720,7 +743,7 @@ section {
 ================================================== */
 
 .live-section {
-    background: #faf9f6;
+    background: #faf6ef;
 }
 
 .live-container {
@@ -801,9 +824,9 @@ section {
 
     border-radius: 50%;
 
-    background: #f2c94c;
+    background: #d4a537;
 
-    color: #3a0d13;
+    color: #3d0a12;
 
     font-size: 25px;
 }
@@ -827,7 +850,7 @@ section {
 }
 
 .live-info h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 28px;
 }
@@ -867,7 +890,7 @@ section {
 
     border-radius: 14px;
 
-    background: #3a0d13;
+    background: #3d0a12;
 
     color: white;
 
@@ -909,9 +932,9 @@ section {
 
     border-radius: 50%;
 
-    background: #f2c94c;
+    background: #d4a537;
 
-    color: #3a0d13;
+    color: #3d0a12;
 }
 
 .sermon-info {
@@ -919,7 +942,7 @@ section {
 }
 
 .sermon-label {
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 10px;
     font-weight: 800;
@@ -940,7 +963,7 @@ section {
 .sermon-meta {
     margin-top: 20px;
 
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 13px;
 }
@@ -976,7 +999,7 @@ section {
 }
 
 .event-placeholder h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 28px;
 }
@@ -991,7 +1014,7 @@ section {
 ================================================== */
 
 .giving-section {
-    background: #3a0d13;
+    background: #3d0a12;
 
     color: white;
 }
@@ -1005,7 +1028,7 @@ section {
 }
 
 .giving-box .small-title {
-    color: #f2c94c;
+    color: #d4a537;
 }
 
 .giving-box h2 {
@@ -1040,7 +1063,7 @@ section {
 .mpesa-item span {
     display: block;
 
-    color: #f2c94c;
+    color: #d4a537;
 
     font-size: 10px;
     font-weight: 800;
@@ -1112,7 +1135,7 @@ section {
 }
 
 .contact-item h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 20px;
 }
@@ -1124,7 +1147,7 @@ section {
 }
 
 .contact-item a:hover {
-    color: #7a1f2b;
+    color: #6b1420;
 }
 
 .map-wrap {
@@ -1172,7 +1195,7 @@ section {
 .footer-brand p {
     margin-top: 7px;
 
-    color: #f2c94c;
+    color: #d4a537;
 
     font-style: italic;
 }
@@ -1190,7 +1213,7 @@ section {
 }
 
 .footer-links a:hover {
-    color: #f2c94c;
+    color: #d4a537;
 }
 
 .footer-bottom {
@@ -1278,7 +1301,7 @@ section {
 
         gap: 0;
 
-        background: #7a1f2b;
+        background: #6b1420;
 
         border-radius: 0 0 10px 10px;
 
@@ -1331,7 +1354,7 @@ section {
 ========================================== */
 
 .ministries-section {
-    background: #faf9f6;
+    background: #faf6ef;
     padding: 90px 0;
 }
 
@@ -1342,9 +1365,21 @@ section {
 }
 
 .section-heading h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
     font-size: 42px;
-    color: #7a1f2b;
+    color: #6b1420;
     margin: 10px 0 15px;
+}
+
+.section-heading h2::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 3px;
+    margin: 18px auto 0;
+    background: linear-gradient(90deg, transparent, #d4a537, transparent);
+    border-radius: 2px;
 }
 
 .section-heading p {
@@ -1408,8 +1443,8 @@ section {
     align-items: center;
     justify-content: center;
 
-    background: #7a1f2b;
-    color: #f2c94c;
+    background: #6b1420;
+    color: #d4a537;
 
     border-radius: 50%;
 
@@ -1418,7 +1453,7 @@ section {
 
 
 .ministry-card h3 {
-    color: #7a1f2b;
+    color: #6b1420;
     font-size: 21px;
     margin-bottom: 12px;
 }
@@ -1436,7 +1471,7 @@ section {
 
     margin-top: 18px;
 
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-family: Arial, sans-serif;
 
@@ -1500,7 +1535,7 @@ section {
 /* YOUTH TEXT */
 
 .youth-content h2 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 42px;
 
@@ -1537,7 +1572,7 @@ section {
 
 
 .youth-verse span {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 24px;
 }
@@ -1555,7 +1590,7 @@ section {
 
 
 .youth-verse strong {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-family: Arial, sans-serif;
 
@@ -1606,7 +1641,7 @@ section {
 ========================================== */
 
 .events-section {
-    background: #faf9f6;
+    background: #faf6ef;
     padding: 100px 0;
 }
 
@@ -1646,7 +1681,7 @@ section {
 /* EVENT DATE */
 
 .event-date {
-    background: #7a1f2b;
+    background: #6b1420;
     color: #ffffff;
 
     padding: 20px;
@@ -1662,7 +1697,7 @@ section {
 }
 
 .event-date strong {
-    color: #f2c94c;
+    color: #d4a537;
     font-size: 34px;
 }
 
@@ -1695,7 +1730,7 @@ section {
 }
 
 .event-content h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 22px;
 
@@ -1755,7 +1790,7 @@ section {
 .events-note span {
     display: block;
 
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 24px;
 
@@ -1782,7 +1817,7 @@ section {
 ========================================== */
 
 .giving-section {
-    background: #faf9f6;
+    background: #faf6ef;
     padding: 100px 0;
 }
 
@@ -1790,7 +1825,7 @@ section {
     max-width: 650px;
     margin: 0 auto;
 
-    background: #7a1f2b;
+    background: #6b1420;
     color: #ffffff;
 
     padding: 50px 40px;
@@ -1815,8 +1850,8 @@ section {
 
     border-radius: 50%;
 
-    background: #f2c94c;
-    color: #7a1f2b;
+    background: #d4a537;
+    color: #6b1420;
 
     font-size: 30px;
 }
@@ -1860,7 +1895,7 @@ section {
 }
 
 .mpesa-number {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-family: Arial, sans-serif;
 
@@ -1879,7 +1914,7 @@ section {
 .copy-btn {
     border: none;
 
-    background: #7a1f2b;
+    background: #6b1420;
     color: #ffffff;
 
     padding: 10px 20px;
@@ -1898,7 +1933,7 @@ section {
 }
 
 .copy-btn:hover {
-    background: #5e1620;
+    background: #4a0f18;
 
     transform: translateY(-2px);
 }
@@ -1915,7 +1950,7 @@ section {
 .giving-note strong {
     display: block;
 
-    color: #f2c94c;
+    color: #d4a537;
 
     margin-bottom: 6px;
 }
@@ -1938,7 +1973,7 @@ section {
 .giving-verse span {
     display: block;
 
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 25px;
 
@@ -1958,7 +1993,7 @@ section {
 .giving-verse strong {
     display: block;
 
-    color: #7a1f2b;
+    color: #6b1420;
 
     margin-top: 8px;
 
@@ -2000,7 +2035,7 @@ section {
 .ministry-card {
     background: #ffffff;
 
-    border: 1px solid #eeeeee;
+    border: 1px solid #f0e9dd;
 
     border-radius: 15px;
 
@@ -2009,19 +2044,31 @@ section {
     text-align: center;
 
     box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.07);
+        0 8px 25px rgba(107, 20, 32, 0.08);
 
     transition:
         transform 0.3s ease,
-        box-shadow 0.3s ease;
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
 }
 
 
 .ministry-card:hover {
     transform: translateY(-8px);
 
+    border-color: #d4a537;
+
     box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.12);
+        0 18px 38px rgba(107, 20, 32, 0.16);
+}
+
+.ministry-card .ministry-icon {
+    display: inline-block;
+    transition: transform 0.35s ease;
+}
+
+.ministry-card:hover .ministry-icon {
+    transform: scale(1.15) rotate(-4deg);
 }
 
 
@@ -2033,7 +2080,7 @@ section {
 
     border-radius: 50%;
 
-    background: #f2c94c;
+    background: #d4a537;
 
     display: flex;
 
@@ -2046,7 +2093,7 @@ section {
 
 
 .ministry-card h3 {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 22px;
 
@@ -2076,9 +2123,9 @@ section {
 .coming-badge {
     display: inline-block;
 
-    background: #f2c94c;
+    background: #d4a537;
 
-    color: #3a0d13;
+    color: #3d0a12;
 
     padding: 5px 12px;
 
@@ -2097,7 +2144,7 @@ section {
 
 
 .ministry-verse {
-    background: #faf9f6;
+    background: #faf6ef;
 
     padding: 70px 20px;
 
@@ -2108,7 +2155,7 @@ section {
 .verse-content span {
     display: block;
 
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-size: 30px;
 
@@ -2132,7 +2179,7 @@ section {
 
 
 .verse-content strong {
-    color: #7a1f2b;
+    color: #6b1420;
 
     font-family: Arial, sans-serif;
 
@@ -2158,7 +2205,7 @@ section {
 ========================================== */
 
 .ministry-section {
-    background: #faf9f6;
+    background: #faf6ef;
 }
 
 .announcement-card {
@@ -2167,13 +2214,13 @@ section {
     background: #ffffff;
     padding: 35px;
     border-radius: 15px;
-    border-left: 5px solid #7a1f2b;
+    border-left: 5px solid #6b1420;
     box-shadow: 0 8px 25px rgba(0,0,0,.07);
 }
 
 .announcement-label {
     display: inline-block;
-    color: #7a1f2b;
+    color: #6b1420;
     font-family: Arial, sans-serif;
     font-size: 12px;
     font-weight: bold;
@@ -2182,7 +2229,7 @@ section {
 }
 
 .announcement-card h3 {
-    color: #7a1f2b;
+    color: #6b1420;
     margin-bottom: 12px;
 }
 
@@ -2219,7 +2266,7 @@ section {
 }
 
 .event-card h3 {
-    color: #7a1f2b;
+    color: #6b1420;
     margin-bottom: 10px;
 }
 
