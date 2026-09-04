@@ -113,7 +113,7 @@
             </div>
 
             <label for="ministrySelect">Managing gallery for:</label>
-            <select id="ministrySelect" onchange="loadGallery()"></select>
+            <select id="ministrySelect" onchange="loadGallery(); loadEvents();"></select>
         </div>
 
         <div class="card" id="siteAssetsCard" style="display:none;">
@@ -150,13 +150,29 @@
         </div>
 
         <div class="card">
-            <h2>Upload a Photo</h2>
-            <label for="fileInput">Photo (choose from your phone or laptop gallery, or take a new one)</label>
-            <input type="file" id="fileInput" accept="image/*">
+            <h2>Upload a Photo or Video</h2>
+            <label for="fileInput">File (choose from your phone or laptop gallery, or take a new one)</label>
+            <input type="file" id="fileInput" accept="image/*,video/mp4,video/webm,video/quicktime">
             <label for="captionInput">Caption (optional)</label>
             <input type="text" id="captionInput" placeholder="e.g. Men's Fellowship Retreat 2026">
             <button onclick="uploadImage()">Upload</button>
             <div class="msg" id="uploadMsg"></div>
+        </div>
+
+        <div class="card">
+            <h2>Upcoming Events</h2>
+            <label for="eventTitleInput">Event title</label>
+            <input type="text" id="eventTitleInput" placeholder="e.g. Men's Fellowship Retreat">
+            <label for="eventDescInput">Description (optional)</label>
+            <input type="text" id="eventDescInput" placeholder="e.g. A weekend of prayer and fellowship">
+            <label for="eventDateInput">Date</label>
+            <input type="date" id="eventDateInput">
+            <label for="eventTimeInput">Time (optional)</label>
+            <input type="time" id="eventTimeInput">
+            <button onclick="addEvent()">Add Event</button>
+            <div class="msg" id="eventMsg"></div>
+
+            <div id="eventsList" style="margin-top:20px;"></div>
         </div>
 
         <div class="card">
@@ -171,7 +187,7 @@
 // ⚠️ Update this once your backend is hosted (see hosting notes).
 const API_BASE = "https://ragnar1454.pythonanywhere.com";
 
-const ALL_MINISTRIES = ["men", "women", "youth", "praise", "instruments"];
+const ALL_MINISTRIES = ["men", "women", "youth", "praise", "instruments", "church"];
 
 async function api(path, options = {}) {
     const res = await fetch(API_BASE + path, {
@@ -233,6 +249,7 @@ function showDashboard(user) {
     }
 
     loadGallery();
+    loadEvents();
 }
 
 async function loadSiteAssets() {
@@ -373,8 +390,11 @@ async function loadGallery() {
 
     images.forEach(img => {
         const fig = document.createElement("figure");
+        const mediaHtml = img.media_type === "video"
+            ? `<video src="${API_BASE}${img.url}" controls style="width:100%; height:110px; object-fit:cover;"></video>`
+            : `<img src="${API_BASE}${img.url}" alt="${img.caption || ''}">`;
         fig.innerHTML = `
-            <img src="${API_BASE}${img.url}" alt="${img.caption || ''}">
+            ${mediaHtml}
             <figcaption>${img.caption || "(no caption)"}</figcaption>
             <button class="danger del-btn" onclick="deleteImage(${img.id})">Delete</button>
         `;
@@ -382,7 +402,7 @@ async function loadGallery() {
     });
 
     if (images.length === 0) {
-        grid.innerHTML = "<p style='color:#888'>No photos yet.</p>";
+        grid.innerHTML = "<p style='color:#888'>No photos or videos yet.</p>";
     }
 }
 
@@ -396,13 +416,15 @@ async function uploadImage() {
 
     if (!fileInput.files[0]) {
         msg.className = "msg error";
-        msg.textContent = "Choose a photo first.";
+        msg.textContent = "Choose a photo or video first.";
         return;
     }
 
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
     formData.append("caption", caption);
+
+    msg.textContent = "Uploading… large videos may take a while.";
 
     const res = await api(`/api/gallery/${ministry}`, {
         method: "POST",
@@ -424,10 +446,84 @@ async function uploadImage() {
 }
 
 async function deleteImage(id) {
-    if (!confirm("Delete this photo?")) return;
+    if (!confirm("Delete this item?")) return;
     const ministry = document.getElementById("ministrySelect").value;
     await api(`/api/gallery/${ministry}/${id}`, { method: "DELETE" });
     loadGallery();
+}
+
+// ---------------------------------------------------------------------------
+// Events
+// ---------------------------------------------------------------------------
+
+async function loadEvents() {
+    const ministry = document.getElementById("ministrySelect").value;
+    const res = await api(`/api/events/${ministry}`);
+    const events = await res.json();
+
+    const list = document.getElementById("eventsList");
+    list.innerHTML = "";
+
+    if (events.length === 0) {
+        list.innerHTML = "<p style='color:#888'>No upcoming events yet.</p>";
+        return;
+    }
+
+    events.forEach(ev => {
+        const row = document.createElement("div");
+        row.style.cssText = "background:#f5f2ed; border-radius:8px; padding:12px; margin-bottom:10px;";
+        row.innerHTML = `
+            <strong>${ev.title}</strong>
+            ${ev.event_date ? `<div style="font-size:13px; color:#666;">📅 ${ev.event_date}${ev.event_time ? " at " + ev.event_time : ""}</div>` : ""}
+            ${ev.description ? `<div style="font-size:13px; margin-top:4px;">${ev.description}</div>` : ""}
+            <button class="danger" style="margin-top:8px; font-size:12px; padding:6px 12px;" onclick="deleteEvent(${ev.id})">Delete</button>
+        `;
+        list.appendChild(row);
+    });
+}
+
+async function addEvent() {
+    const ministry = document.getElementById("ministrySelect").value;
+    const title = document.getElementById("eventTitleInput").value.trim();
+    const description = document.getElementById("eventDescInput").value.trim();
+    const event_date = document.getElementById("eventDateInput").value;
+    const event_time = document.getElementById("eventTimeInput").value;
+    const msg = document.getElementById("eventMsg");
+    msg.className = "msg";
+    msg.textContent = "";
+
+    if (!title) {
+        msg.className = "msg error";
+        msg.textContent = "Event title is required.";
+        return;
+    }
+
+    const res = await api(`/api/events/${ministry}`, {
+        method: "POST",
+        body: JSON.stringify({ title, description, event_date, event_time }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+        msg.className = "msg error";
+        msg.textContent = data.error || "Failed to add event";
+        return;
+    }
+
+    msg.className = "msg ok";
+    msg.textContent = "Event added!";
+    document.getElementById("eventTitleInput").value = "";
+    document.getElementById("eventDescInput").value = "";
+    document.getElementById("eventDateInput").value = "";
+    document.getElementById("eventTimeInput").value = "";
+    loadEvents();
+}
+
+async function deleteEvent(id) {
+    if (!confirm("Delete this event?")) return;
+    const ministry = document.getElementById("ministrySelect").value;
+    await api(`/api/events/${ministry}/${id}`, { method: "DELETE" });
+    loadEvents();
 }
 
 // Stay logged in across page refresh
@@ -442,3 +538,4 @@ async function deleteImage(id) {
 
 </body>
 </html>
+
