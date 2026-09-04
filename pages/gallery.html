@@ -98,9 +98,9 @@ INSTRUMENTS
 <br>
 
 
-<div class="gallery-grid">
+<div class="gallery-grid" id="churchGalleryGrid">
 
-<figure class="gallery-item">
+<figure class="gallery-item" id="churchGalleryPlaceholder">
 
 <img src="../images/youth-group.jpg"
 alt="Faith Assembly Church Youth">
@@ -114,11 +114,38 @@ Youth Fellowship
 </div>
 
 
-<p class="center">
+<p class="center" id="galleryMoreNote">
 
 More photographs will be added later.
 
 </p>
+
+<script>
+// ⚠️ Update this once your backend is hosted (see hosting notes).
+(async function loadChurchGallery() {
+    const API_BASE = "https://ragnar1454.pythonanywhere.com";
+    try {
+        const res = await fetch(`${API_BASE}/api/gallery/church`);
+        if (!res.ok) return;
+        const items = await res.json();
+        if (items.length === 0) return;
+
+        const grid = document.getElementById("churchGalleryGrid");
+        grid.innerHTML = items.map(item => `
+            <figure class="gallery-item">
+                ${item.media_type === "video"
+                    ? `<video src="${API_BASE}${item.url}" controls style="width:100%; height:220px; object-fit:cover; display:block;"></video>`
+                    : `<img src="${API_BASE}${item.url}" alt="${item.caption || 'Church photo'}">`}
+                <figcaption>${item.caption || ""}</figcaption>
+            </figure>
+        `).join("");
+
+        document.getElementById("galleryMoreNote").style.display = "none";
+    } catch (err) {
+        console.log("Church gallery not loaded, showing placeholder:", err);
+    }
+})();
+</script>
 
 </div>
 
