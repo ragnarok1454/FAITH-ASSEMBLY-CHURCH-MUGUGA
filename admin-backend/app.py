@@ -28,14 +28,21 @@ UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
 ALLOWED_VIDEO_EXTENSIONS = {"mp4", "webm", "mov"}
 
-# Ministries that have a gallery an admin can manage.
-# Add more slugs here later (e.g. "youth", "praise", "instruments") as you
-# create admins for them — no other code changes needed.
-VALID_MINISTRIES = {"men", "women", "youth", "praise", "instruments"}
+# Ministries that have a gallery an admin can manage, plus "church" for
+# general church-wide photos/videos that any Super Admin can post.
+# Add more slugs here later (e.g. "teens") as you create admins for them —
+# no other code changes needed.
+VALID_MINISTRIES = {"men", "women", "youth", "praise", "instruments", "church"}
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("APP_SECRET_KEY", "change-this-in-production")
-app.config.update( SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True, )
+
+# Allow the login cookie to work across different domains (your GitHub Pages
+# site and this PythonAnywhere backend are on different domains).
+app.config.update(
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True,
+)
 
 # Video files can be large — raise the default upload limit to 300MB.
 # (If you host on a free-tier service, check its own upload limit too —
@@ -74,8 +81,37 @@ def init_db():
             ministry TEXT NOT NULL,
             filename TEXT NOT NULL,
             caption TEXT,
+            media_type TEXT NOT NULL DEFAULT 'image',
             uploaded_by TEXT,
             uploaded_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    # Add media_type column if upgrading from an older version of this app
+    # where the column didn't exist yet.
+    existing_cols = [row["name"] for row in conn.execute("PRAGMA table_info(gallery_images)")]
+    if "media_type" not in existing_cols:
+        conn.execute("ALTER TABLE gallery_images ADD COLUMN media_type TEXT NOT NULL DEFAULT 'image'")
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ministry TEXT NOT NULL,
+            title TEXT NOT NULL,
+            description TEXT,
+            event_date TEXT,
+            event_time TEXT,
+            created_by TEXT,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS announcements (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ministry TEXT NOT NULL,
+            title TEXT NOT NULL,
+            message TEXT NOT NULL,
+            created_by TEXT,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
         )
     """)
     # Site-wide assets that only a Super Admin can change:
@@ -193,7 +229,7 @@ def list_gallery(ministry):
 
     conn = get_db()
     rows = conn.execute(
-        "SELECT id, filename, caption, uploaded_at FROM gallery_images "
+        "SELECT id, filename, caption, media_type, uploaded_at FROM gallery_images "
         "WHERE ministry = ? ORDER BY uploaded_at DESC",
         (ministry,),
     ).fetchall()
@@ -204,6 +240,7 @@ def list_gallery(ministry):
             "id": row["id"],
             "url": f"/uploads/{ministry}/{row['filename']}",
             "caption": row["caption"],
+            "media_type": row["media_type"],
             "uploaded_at": row["uploaded_at"],
         }
         for row in rows
@@ -223,8 +260,17 @@ def upload_image(ministry):
         return jsonify({"error": "No file uploaded"}), 400
 
     file = request.files["file"]
-    if file.filename == "" or not allowed_image(file.filename):
-        return jsonify({"error": "Invalid or missing file"}), 400
+    if file.filename == "":
+        return jsonify({"error": "No file selected"}), 400
+
+    if allowed_image(file.filename):
+        media_type = "image"
+    elif allowed_video(file.filename):
+        media_type = "video"
+    else:
+        return jsonify({"error": "Unsupported file type. Allowed: "
+                                  "photos (png, jpg, jpeg, webp, gif) or "
+                                  "videos (mp4, webm, mov)"}), 400
 
     caption = request.form.get("caption", "")
 
@@ -237,14 +283,14 @@ def upload_image(ministry):
 
     conn = get_db()
     conn.execute(
-        "INSERT INTO gallery_images (ministry, filename, caption, uploaded_by) "
-        "VALUES (?, ?, ?, ?)",
-        (ministry, safe_name, caption, session["username"]),
+        "INSERT INTO gallery_images (ministry, filename, caption, media_type, uploaded_by) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (ministry, safe_name, caption, media_type, session["username"]),
     )
     conn.commit()
     conn.close()
 
-    return jsonify({"ok": True, "filename": safe_name})
+    return jsonify({"ok": True, "filename": safe_name, "media_type": media_type})
 
 
 @app.route("/api/gallery/<ministry>/<int:image_id>", methods=["DELETE"])
@@ -279,6 +325,172 @@ def delete_image(ministry, image_id):
 @app.route("/uploads/<ministry>/<filename>")
 def serve_upload(ministry, filename):
     return send_from_directory(os.path.join(UPLOAD_DIR, ministry), filename)
+
+
+# ---------------------------------------------------------------------------
+# Events routes
+# ---------------------------------------------------------------------------
+
+@app.route("/api/events/<ministry>", methods=["GET"])
+def list_events(ministry):
+    """Public — event pages call this to show upcoming events."""
+    if ministry not in VALID_MINISTRIES:
+        return jsonify({"error": "Unknown ministry"}), 404
+
+    conn = get_db()
+    rows = conn.execute(
+        "SELECT id, title, description, event_date, event_time, created_at "
+        "FROM events WHERE ministry = ? ORDER BY event_date ASC, event_time ASC",
+        (ministry,),
+    ).fetchall()
+    conn.close()
+
+    events = [
+        {
+            "id": row["id"],
+            "title": row["title"],
+            "description": row["description"],
+            "event_date": row["event_date"],
+            "event_time": row["event_time"],
+        }
+        for row in rows
+    ]
+    return jsonify(events)
+
+
+@app.route("/api/events/<ministry>", methods=["POST"])
+@login_required
+def add_event(ministry):
+    if ministry not in VALID_MINISTRIES:
+        return jsonify({"error": "Unknown ministry"}), 404
+    if not can_manage_ministry(ministry):
+        return jsonify({"error": "You don't have permission to manage this ministry's events"}), 403
+
+    data = request.get_json(silent=True) or {}
+    title = data.get("title", "").strip()
+    description = data.get("description", "").strip()
+    event_date = data.get("event_date", "").strip()  # expected format: YYYY-MM-DD
+    event_time = data.get("event_time", "").strip()  # expected format: HH:MM
+
+    if not title:
+        return jsonify({"error": "Event title is required"}), 400
+
+    conn = get_db()
+    cur = conn.execute(
+        "INSERT INTO events (ministry, title, description, event_date, event_time, created_by) "
+        "VALUES (?, ?, ?, ?, ?, ?)",
+        (ministry, title, description, event_date, event_time, session["username"]),
+    )
+    conn.commit()
+    event_id = cur.lastrowid
+    conn.close()
+
+    return jsonify({"ok": True, "id": event_id})
+
+
+@app.route("/api/events/<ministry>/<int:event_id>", methods=["DELETE"])
+@login_required
+def delete_event(ministry, event_id):
+    if ministry not in VALID_MINISTRIES:
+        return jsonify({"error": "Unknown ministry"}), 404
+    if not can_manage_ministry(ministry):
+        return jsonify({"error": "You don't have permission to manage this ministry's events"}), 403
+
+    conn = get_db()
+    row = conn.execute(
+        "SELECT id FROM events WHERE id = ? AND ministry = ?", (event_id, ministry)
+    ).fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"error": "Event not found"}), 404
+
+    conn.execute("DELETE FROM events WHERE id = ?", (event_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"ok": True})
+
+
+# ---------------------------------------------------------------------------
+# Announcements routes
+# ---------------------------------------------------------------------------
+
+@app.route("/api/announcements/<ministry>", methods=["GET"])
+def list_announcements(ministry):
+    """Public — announcement pages call this to show current notices."""
+    if ministry not in VALID_MINISTRIES:
+        return jsonify({"error": "Unknown ministry"}), 404
+
+    conn = get_db()
+    rows = conn.execute(
+        "SELECT id, title, message, created_at FROM announcements "
+        "WHERE ministry = ? ORDER BY created_at DESC",
+        (ministry,),
+    ).fetchall()
+    conn.close()
+
+    announcements = [
+        {
+            "id": row["id"],
+            "title": row["title"],
+            "message": row["message"],
+            "created_at": row["created_at"],
+        }
+        for row in rows
+    ]
+    return jsonify(announcements)
+
+
+@app.route("/api/announcements/<ministry>", methods=["POST"])
+@login_required
+def add_announcement(ministry):
+    if ministry not in VALID_MINISTRIES:
+        return jsonify({"error": "Unknown ministry"}), 404
+    if not can_manage_ministry(ministry):
+        return jsonify({"error": "You don't have permission to post here"}), 403
+
+    data = request.get_json(silent=True) or {}
+    title = data.get("title", "").strip()
+    message = data.get("message", "").strip()
+
+    if not title or not message:
+        return jsonify({"error": "Title and message are both required"}), 400
+
+    conn = get_db()
+    cur = conn.execute(
+        "INSERT INTO announcements (ministry, title, message, created_by) "
+        "VALUES (?, ?, ?, ?)",
+        (ministry, title, message, session["username"]),
+    )
+    conn.commit()
+    announcement_id = cur.lastrowid
+    conn.close()
+
+    return jsonify({"ok": True, "id": announcement_id})
+
+
+@app.route("/api/announcements/<ministry>/<int:announcement_id>", methods=["DELETE"])
+@login_required
+def delete_announcement(ministry, announcement_id):
+    if ministry not in VALID_MINISTRIES:
+        return jsonify({"error": "Unknown ministry"}), 404
+    if not can_manage_ministry(ministry):
+        return jsonify({"error": "You don't have permission to manage this"}), 403
+
+    conn = get_db()
+    row = conn.execute(
+        "SELECT id FROM announcements WHERE id = ? AND ministry = ?",
+        (announcement_id, ministry),
+    ).fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"error": "Announcement not found"}), 404
+
+    conn.execute("DELETE FROM announcements WHERE id = ?", (announcement_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"ok": True})
 
 
 # ---------------------------------------------------------------------------
@@ -396,7 +608,9 @@ def set_sermon():
     conn.close()
     return jsonify({"ok": True, "type": "youtube", "youtube_id": youtube_id})
 
+
 init_db()
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True, port=5000)
