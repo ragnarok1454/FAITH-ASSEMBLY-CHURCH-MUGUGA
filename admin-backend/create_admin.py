@@ -16,7 +16,7 @@ from werkzeug.security import generate_password_hash
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "church.db")
 
-VALID_MINISTRIES = {"men", "women", "youth", "praise", "instruments"}
+VALID_MINISTRIES = {"men", "women", "youth", "praise", "instruments", "church"}
 
 
 def main():
